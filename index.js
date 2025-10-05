@@ -148,6 +148,7 @@ const checker = () => {
     if (val1 !== "" && val1 === val2 && val2 === val3) {
       alert(`Player ${val1} wins!`);
       disableAll();
+      clearBoard();
       return;
     }
   }
@@ -155,6 +156,7 @@ const checker = () => {
   // Check for draw
   if ([...boxes].every(box => box.innerText !== "")) {
     alert("It's a draw!");
+    clearBoard();
   }
 };
 
