@@ -1,50 +1,169 @@
-Retro Tic Tac Toe - Web Game
-🎮 A stunning, retro cyberpunk-themed Tic Tac Toe game built with HTML, CSS, and JavaScript. Packed with neon glows, CRT scanlines, floating pixels, and authentic 8-bit square-wave sound effects for that true arcade vibe!
-pond5.compond5.comcodecanyon.netpond5.com
+🎮 Retro Tic Tac Toe – Web Game
 
-
+A stunning retro cyberpunk–themed Tic Tac Toe game built with HTML, CSS, and JavaScript.
+Packed with neon glows, CRT scanlines, floating pixels, and authentic 8-bit square-wave sound effects for a true arcade vibe.
 
 🧠 Features
+🎯 Game Modes
 
-Two game modes:
-👥 Player vs Player (hotseat) & 🤖 Player vs Computer
-Smart AI opponent that blocks wins, takes winning moves, and prefers center/corners – hard to beat!
-Authentic retro CRT screen effect with animated scanlines and subtle flicker
-Neon glowing borders, text, and buttons with pulsing animations
-Pixel-perfect 8-bit font (Press Start 2P) for ultimate arcade nostalgia
-Retro beep sound effects on every move, win, draw, and button click
-Real-time score tracking with persistent wins across rounds
-Beautiful game over modal with animated pop-in and victory/draw messages
+👥 Player vs Player (Local Hotseat)
+
+🤖 Player vs Computer (Smart AI)
+
+🤖 Smart AI
+
+Blocks opponent wins
+
+Takes winning moves when available
+
+Prefers center and corners
+
+Surprisingly hard to beat
+
+🎨 Visual Effects
+
+Authentic retro CRT screen effect
+
+Animated scanlines
+
+Subtle screen flicker
+
+Neon glowing borders, grid, and text
+
+Pulsing cyberpunk animations
+
+Floating background pixels
+
+Pixel-perfect 8-bit font (Press Start 2P)
+
+🔊 Sound Design
+
+Authentic 8-bit square-wave sound effects
+
+Sounds for:
+
+Moves
+
+Wins
+
+Draws
+
+Button clicks
+
 Sound on/off toggle with visual feedback
-Floating background pixels and glowing grid for immersive cyberpunk atmosphere
-Fully responsive design – looks amazing on mobile, tablet, and desktop
+
+🧮 Gameplay Enhancements
+
+Real-time score tracking
+
+Persistent scores across rounds
+
+Animated Game Over modal
+
+Victory messages
+
+Draw notifications
+
+Fully responsive design
+
+Mobile
+
+Tablet
+
+Desktop
 
 🛠️ Tech Stack
 
-HTML5 – Clean semantic structure and modal implementation
-CSS3 – Advanced retro styling, glow animations, scanlines, gradients, and responsive layout
-Vanilla JavaScript – Game logic, AI, sound generation (Web Audio API), mode switching, and DOM control
+HTML5
+
+Clean semantic structure
+
+Modal implementation
+
+CSS3
+
+Retro styling
+
+Neon glow animations
+
+CRT scanlines
+
+Gradients
+
+Responsive layout
+
+Vanilla JavaScript
+
+Game logic
+
+AI behavior
+
+Sound generation (Web Audio API)
+
+Mode switching
+
+DOM manipulation
 
 🧩 How to Play
 
-Open the game in any modern browser (single-file project – no setup required).
-Choose your mode: PvP for local two-player fun, or PvC to challenge the AI.
-Player O always starts – click an empty box to place your mark.
-In PvP mode, players alternate turns; in PvC mode, the computer responds intelligently after a short "thinking" delay.
-First to align three marks wins – or fill the board for a draw!
-Scores update automatically.
-RESET: Clears the board (keeps scores and current turn)
-NEW GAME: Resets everything including scores
+Open the game in any modern browser
+(Single-file project — no setup required)
 
-Toggle sound with the 🔊 button in the top-right corner.
+Choose your mode:
+
+PvP – Local two-player fun
+
+PvC – Challenge the AI
+
+Player O always starts
+
+Click an empty box to place your mark
+
+Gameplay:
+
+PvP: Players alternate turns
+
+PvC: Computer responds after a short “thinking” delay
+
+Win by aligning three marks in a row
+
+Horizontal
+
+Vertical
+
+Diagonal
+
+Fill the board with no winner = Draw
+
+🔄 Controls
+
+RESET – Clears the board (keeps scores & turn)
+
+NEW GAME – Resets everything including scores
+
+🔊 Sound Toggle – Top-right corner
 
 🎮 Game Rules
-Classic Tic Tac Toe:
 
-Get three of your marks (O or X) in a row – horizontally, vertically, or diagonally.
-Block your opponent while planning your own winning line.
-The board fills completely with no winner = Draw.
+Classic Tic Tac Toe rules apply:
+
+Get three of your marks (O or X) in a row
+
+Block your opponent’s winning moves
+
+Plan your own winning strategy
+
+Full board with no winner results in a Draw
 
 🚀 Live Demo
-👉 https://pathrabe2416.github.io/tic-tac-toe/
-Feel free to fork, star, or contribute! 🚀
+
+👉 Play Here:
+https://pathrabe2416.github.io/tic-tac-toe/
+
+⭐ Contribute & Support
+
+Feel free to fork this repository
+
+Leave a ⭐ if you enjoy the game
+
+Contributions and improvements are welcome!
