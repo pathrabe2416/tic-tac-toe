@@ -1,169 +1,85 @@
-##🎮 Retro Tic Tac Toe – Web Game
+# ✏️ ☰ **Retro Tic Tac Toe – Web Game**
 
-A stunning retro cyberpunk–themed Tic Tac Toe game built with HTML, CSS, and JavaScript.
-Packed with neon glows, CRT scanlines, floating pixels, and authentic 8-bit square-wave sound effects for a true arcade vibe.
+🎮 **A stunning retro cyberpunk–themed Tic Tac Toe game** built with **HTML, CSS, and JavaScript**.  
+Featuring a **CRT arcade aesthetic**, neon glows, animated scanlines, floating pixels, and authentic **8-bit square-wave sound effects** for a true retro vibe.
 
-##🧠 Features
-##🎯 Game Modes
+Play in **Player vs Player (hotseat)** or challenge the **smart AI** in **Player vs Computer** mode!
 
-👥 Player vs Player (Local Hotseat)
+---
 
-🤖 Player vs Computer (Smart AI)
+## 🧠 **Features**
 
-🤖 Smart AI
+- 🎯 Two game modes: **Player vs Player** & **Player vs Computer**
+- 🤖 Smart AI that:
+  - Blocks winning moves
+  - Takes winning opportunities
+  - Prefers center and corners
+- 📺 Authentic **retro CRT screen effect**
+  - Animated scanlines
+  - Subtle flicker animation
+- ✨ Neon glowing grid, text, and buttons
+- 🕹️ Pixel-perfect **8-bit font** (Press Start 2P)
+- 🔊 Retro **8-bit beep sound effects** on:
+  - Moves
+  - Wins
+  - Draws
+  - Button clicks
+- 🧮 Real-time score tracking (persistent across rounds)
+- 🏆 Animated game-over modal with win/draw messages
+- 🔊 Sound on/off toggle with visual feedback
+- 🌌 Floating background pixels for cyberpunk atmosphere
+- 📱 Fully responsive design (mobile, tablet, desktop)
 
-Blocks opponent wins
+---
 
-Takes winning moves when available
+## 🛠️ Tech Stack
 
-Prefers center and corners
+- **HTML5** – Semantic structure & modal layout  
+- **CSS3** – Neon glow effects, CRT scanlines, animations, responsive styling  
+- **Vanilla JavaScript** – Game logic, AI behavior, sound generation (Web Audio API), DOM control  
 
-Surprisingly hard to beat
+---
 
-##🎨 Visual Effects
+## 🧩 How to Play
 
-Authentic retro CRT screen effect
+1. Open the game in any modern browser  
+   *(Single-file project — no setup required)*  
+2. Choose your mode:
+   - 👥 **Player vs Player**
+   - 🤖 **Player vs Computer**
+3. **Player O always starts**
+4. Click an empty square to place your mark
+5. In PvC mode, the computer responds after a short “thinking” delay
+6. Align **three marks** to win — or fill the board for a draw
+7. Scores update automatically
 
-Animated scanlines
+### 🔄 Controls
+- **RESET** – Clears the board (keeps scores & turn)
+- **NEW GAME** – Resets everything including scores
+- **🔊 Sound Toggle** – Top-right corner
 
-Subtle screen flicker
+---
 
-Neon glowing borders, grid, and text
+## 🎮 Game Rules
 
-Pulsing cyberpunk animations
+Classic **Tic Tac Toe** rules apply:
 
-Floating background pixels
+- Get **three of your marks (O or X)** in a row
+- Horizontal, vertical, or diagonal
+- Block your opponent while planning your own win
+- Full board with no winner = **Draw**
 
-Pixel-perfect 8-bit font (Press Start 2P)
+---
 
-##🔊 Sound Design
+## 🚀 **Live Demo**
 
-Authentic 8-bit square-wave sound effects
+👉 **Play Here:**  
+🔗 https://pathrabe2416.github.io/tic-tac-toe/
 
-Sounds for:
+---
 
-Moves
+## ⭐ Contribute & Support
 
-Wins
-
-Draws
-
-Button clicks
-
-Sound on/off toggle with visual feedback
-
-##🧮 Gameplay Enhancements
-
-Real-time score tracking
-
-Persistent scores across rounds
-
-Animated Game Over modal
-
-Victory messages
-
-Draw notifications
-
-Fully responsive design
-
-Mobile
-
-Tablet
-
-Desktop
-
-##🛠️ Tech Stack
-
-HTML5
-
-Clean semantic structure
-
-Modal implementation
-
-CSS3
-
-Retro styling
-
-Neon glow animations
-
-CRT scanlines
-
-Gradients
-
-Responsive layout
-
-Vanilla JavaScript
-
-Game logic
-
-AI behavior
-
-Sound generation (Web Audio API)
-
-Mode switching
-
-DOM manipulation
-
-##🧩 How to Play
-
-Open the game in any modern browser
-(Single-file project — no setup required)
-
-Choose your mode:
-
-PvP – Local two-player fun
-
-PvC – Challenge the AI
-
-Player O always starts
-
-Click an empty box to place your mark
-
-Gameplay:
-
-PvP: Players alternate turns
-
-PvC: Computer responds after a short “thinking” delay
-
-Win by aligning three marks in a row
-
-Horizontal
-
-Vertical
-
-Diagonal
-
-Fill the board with no winner = Draw
-
-##🔄 Controls
-
-RESET – Clears the board (keeps scores & turn)
-
-NEW GAME – Resets everything including scores
-
-🔊 Sound Toggle – Top-right corner
-
-##🎮 Game Rules
-
-Classic Tic Tac Toe rules apply:
-
-Get three of your marks (O or X) in a row
-
-Block your opponent’s winning moves
-
-Plan your own winning strategy
-
-Full board with no winner results in a Draw
-
-##🚀 Live Demo
-
-👉 Play Here:
-https://pathrabe2416.github.io/tic-tac-toe/
-
-##⭐ Contribute & Support
-
-Feel free to fork this repository
-
-Leave a ⭐ if you enjoy the game
-
-Contributions and improvements are welcome!
+- Fork the repository
+- Star ⭐ the project if you like it
+- Contributions and improvements are welcome!
