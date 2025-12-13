@@ -1,10 +1,10 @@
-🎮 Retro Tic Tac Toe – Web Game
+##🎮 Retro Tic Tac Toe – Web Game
 
 A stunning retro cyberpunk–themed Tic Tac Toe game built with HTML, CSS, and JavaScript.
 Packed with neon glows, CRT scanlines, floating pixels, and authentic 8-bit square-wave sound effects for a true arcade vibe.
 
-🧠 Features
-🎯 Game Modes
+##🧠 Features
+##🎯 Game Modes
 
 👥 Player vs Player (Local Hotseat)
 
@@ -20,7 +20,7 @@ Prefers center and corners
 
 Surprisingly hard to beat
 
-🎨 Visual Effects
+##🎨 Visual Effects
 
 Authentic retro CRT screen effect
 
@@ -36,7 +36,7 @@ Floating background pixels
 
 Pixel-perfect 8-bit font (Press Start 2P)
 
-🔊 Sound Design
+##🔊 Sound Design
 
 Authentic 8-bit square-wave sound effects
 
@@ -52,7 +52,7 @@ Button clicks
 
 Sound on/off toggle with visual feedback
 
-🧮 Gameplay Enhancements
+##🧮 Gameplay Enhancements
 
 Real-time score tracking
 
@@ -72,7 +72,7 @@ Tablet
 
 Desktop
 
-🛠️ Tech Stack
+##🛠️ Tech Stack
 
 HTML5
 
@@ -104,7 +104,7 @@ Mode switching
 
 DOM manipulation
 
-🧩 How to Play
+##🧩 How to Play
 
 Open the game in any modern browser
 (Single-file project — no setup required)
@@ -135,7 +135,7 @@ Diagonal
 
 Fill the board with no winner = Draw
 
-🔄 Controls
+##🔄 Controls
 
 RESET – Clears the board (keeps scores & turn)
 
@@ -143,7 +143,7 @@ NEW GAME – Resets everything including scores
 
 🔊 Sound Toggle – Top-right corner
 
-🎮 Game Rules
+##🎮 Game Rules
 
 Classic Tic Tac Toe rules apply:
 
@@ -155,12 +155,12 @@ Plan your own winning strategy
 
 Full board with no winner results in a Draw
 
-🚀 Live Demo
+##🚀 Live Demo
 
 👉 Play Here:
 https://pathrabe2416.github.io/tic-tac-toe/
 
-⭐ Contribute & Support
+##⭐ Contribute & Support
 
 Feel free to fork this repository
 
