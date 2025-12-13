@@ -1,4 +1,3 @@
-
 Retro Tic Tac Toe - Web Game
 🎮 A stunning, retro cyberpunk-themed Tic Tac Toe game built with HTML, CSS, and JavaScript. Packed with neon glows, CRT scanlines, floating pixels, and authentic 8-bit square-wave sound effects for that true arcade vibe!
 
