@@ -1,7 +1,8 @@
-# ✏️ ☰ **Retro Tic Tac Toe – Web Game**
+# 🎮 **Retro Tic Tac Toe – Web Game**
 
 🎮 **A stunning retro cyberpunk–themed Tic Tac Toe game** built with **HTML, CSS, and JavaScript**.  
-Featuring a **CRT arcade aesthetic**, neon glows, animated scanlines, floating pixels, and authentic **8-bit square-wave sound effects** for a true retro vibe.
+Featuring a **CRT arcade aesthetic**, neon glows, animated scanlines, floating pixels, and authentic
+**8-bit square-wave sound effects** for a true retro vibe.
 
 Play in **Player vs Player (hotseat)** or challenge the **smart AI** in **Player vs Computer** mode!
 
@@ -36,7 +37,8 @@ Play in **Player vs Player (hotseat)** or challenge the **smart AI** in **Player
 
 - **HTML5** – Semantic structure & modal layout  
 - **CSS3** – Neon glow effects, CRT scanlines, animations, responsive styling  
-- **Vanilla JavaScript** – Game logic, AI behavior, sound generation (Web Audio API), DOM control  
+- **Vanilla JavaScript** – Game logic, AI behavior, sound generation (Web Audio API),
+-  DOM control  
 
 ---
 
