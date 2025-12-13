@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Tic Tac Toe</title>
+  <link rel="stylesheet" href="index.css">
+
+</head>
+<body>
+  <!-- Floating pixels for retro effect -->
+  <div class="pixel" style="left: 10%; animation-delay: 0s;"></div>
+  <div class="pixel" style="left: 30%; animation-delay: 2s;"></div>
+  <div class="pixel" style="left: 50%; animation-delay: 4s; background: #ff00ff;"></div>
+  <div class="pixel" style="left: 70%; animation-delay: 6s;"></div>
+  <div class="pixel" style="left: 90%; animation-delay: 8s; background: #ffff00;"></div>
+
+  <button class="sound-toggle" id="soundToggle">🔊 SOUND ON</button>
+
+  <h1>⚡ TIC TAC TOE ⚡</h1>
+
+  <div class="mode-selector">
+    <button class="mode-btn active" id="pvpBtn">👥 P1 vs P2</button>
+    <button class="mode-btn" id="pvcBtn">🤖 P1 vs CPU</button>
+  </div>
+
+  <div class="score-board">
+    <div class="score">
+      <div id="player1Label">PLAYER O</div>
+      <span class="score-value" id="scoreO">0</span>
+    </div>
+    <div class="score">
+      <div id="player2Label">PLAYER X</div>
+      <span class="score-value" id="scoreX">0</span>
+    </div>
+  </div>
+
+  <div class="game">
+    <div class="container">
+      <button class="box"></button>
+      <button class="box"></button>
+      <button class="box"></button>
+      <button class="box"></button>
+      <button class="box"></button>
+      <button class="box"></button>
+      <button class="box"></button>
+      <button class="box"></button>
+      <button class="box"></button>
+    </div>
+  </div>
+
+  <footer>
+    <button class="reset">RESET</button>
+    <button class="new">NEW GAME</button>
+  </footer>
+
+  <!-- Game Over Modal -->
+  <div class="modal" id="gameModal">
+    <div class="modal-content">
+      <h2 id="modalMessage">PLAYER O WINS!</h2>
+      <button id="modalBtn">PLAY AGAIN</button>
+    </div>
+  </div>
+
+
+  <script src="index.js"></script>
+</body>
+</html>
