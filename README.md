@@ -1,52 +1,45 @@
-# tic-tac-toe
-🎮 Tic Tac Toe - Web Game
 
-This is a simple, responsive web-based Tic Tac Toe game built using HTML, CSS, and JavaScript. It supports two-player gameplay (Player O vs Player X) on the same device and features game state handling, winner detection, and reset/new game options.
+Retro Tic Tac Toe - Web Game
+🎮 A stunning, retro cyberpunk-themed Tic Tac Toe game built with HTML, CSS, and JavaScript. Packed with neon glows, CRT scanlines, floating pixels, and authentic 8-bit square-wave sound effects for that true arcade vibe!
 
 🧠 Features
 
-✅ Interactive 3x3 Tic Tac Toe board
-
-✅ Two-player mode: Player O and Player X
-
-✅ Automatic win detection (rows, columns, diagonals)
-
-✅ Draw detection if all boxes are filled without a winner
-
-✅ "Reset" button to clear the board while keeping the current turn
-
-✅ "New Game" button to clear the board and start with Player O
-
-✅ Clean and modern UI with responsive layout
+    Two game modes: 👥 Player vs Player (hotseat) & 🤖 Player vs Computer
+    Smart AI opponent that blocks wins, takes winning moves, prefers center/corners – hard to beat!
+    Authentic retro CRT screen effect with animated scanlines and subtle flicker
+    Neon glowing borders, text, and buttons with pulsing animations
+    Pixel-perfect 8-bit font (Press Start 2P) for ultimate arcade nostalgia
+    Retro beep sound effects on every move, win, draw, and button click
+    Real-time score tracking with persistent wins across rounds
+    Beautiful game over modal with animated pop-in and victory/draw messages
+    Sound on/off toggle with visual feedback
+    Floating background pixels and glowing grid for immersive cyberpunk atmosphere
+    Fully responsive design – looks amazing on mobile, tablet, and desktop
 
 🛠️ Tech Stack
 
-HTML5 – Structure of the game
+    HTML5 – Clean semantic structure and modal implementation
+    CSS3 – Advanced retro styling, glow animations, scanlines, gradients, and responsive layout
+    Vanilla JavaScript – Game logic, AI, sound generation (Web Audio API), mode switching, and DOM control
 
-CSS3 – Styling and responsive layout
+🧩 How to Play
 
-JavaScript (Vanilla) – Game logic and interactivity
+    Open the game in any modern browser (single-file project – no setup required).
+    Choose your mode: PvP for local two-player fun, or PvC to challenge the AI.
+    Player O always starts – click an empty box to place your mark.
+    In PvP mode, players alternate turns; in PvC mode, the computer responds intelligently after a short "thinking" delay.
+    First to align three marks wins – or fill the board for a draw!
+    Scores update automatically. Use RESET to clear the board, or NEW GAME to reset scores too.
+    Toggle sound with the 🔊 button in the top-right corner.
 
-🧩 Game Logic
+🎮 Game Rules
+Classic Tic Tac Toe:
 
-The game board is made of 9 buttons arranged in a grid.
+    Get three of your marks (O or X) in a row – horizontally, vertically, or diagonally.
+    Block your opponent while planning your own winning line.
+    The board fills completely with no winner = Draw.
 
-Players alternate turns to place "O" and "X".
+🚀 Live Demo
+👉 https://pathrabe2416.github.io/tic-tac-toe/
 
-After each move, the game checks:
-
-If any winning pattern is matched
-
-If all boxes are filled (for a draw)
-
-When a win is detected, an alert shows the winner, and further moves are disabled.
-
-"Reset" only clears the board but retains the current player.
-
-"New Game" clears the board and resets the turn to Player O.
-
-📸 Screenshot
-
-You can include a screenshot of the game here if desired.
-
-https://pathrabe2416.github.io/tic-tac-toe/
+Feel free to fork, star, or contribute! 🚀
