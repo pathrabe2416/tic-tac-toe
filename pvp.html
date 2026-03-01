@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIC×TAC — vs Player</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.07);
+    --border: rgba(255,255,255,0.08);
+    --o-color: #64ffda;
+    --o-glow: rgba(100,255,218,0.3);
+    --x-color: #ff6b6b;
+    --x-glow: rgba(255,107,107,0.3);
+    --text: #e8e8f0;
+    --text-muted: rgba(232,232,240,0.4);
+    --gold: #ffd166;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { height: 100%; }
+
+  body {
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    /* REMOVED: overflow: hidden — was blocking scroll */
+    position: relative;
+    padding: 80px 20px 40px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; /* fixed so background stays while scrolling */
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(100,255,218,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 80%, rgba(255,107,107,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(255,209,102,0.02) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; /* fixed so noise stays while scrolling */
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 420px;
+    max-width: 100%;
+    margin: auto;
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Back button */
+  .back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(232,232,240,0.5);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+  }
+  .back-btn:hover {
+    color: var(--x-color);
+    border-color: rgba(255,107,107,0.3);
+    background: rgba(255,107,107,0.06);
+    transform: translateX(-2px);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 8px;
+  }
+
+  .game-title {
+    font-size: 52px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .game-title span { color: var(--x-color); }
+
+  .mode-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    background: rgba(255,107,107,0.08);
+    border: 1px solid rgba(255,107,107,0.2);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--x-color);
+  }
+
+  .score-wrap {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px;
+    backdrop-filter: blur(20px);
+  }
+
+  .score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 24px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    min-width: 80px;
+  }
+
+  .score-item.active-score { background: var(--surface-hover); }
+
+  .score-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 4px;
+  }
+
+  .score-label.o-label { color: var(--o-color); }
+  .score-label.x-label { color: var(--x-color); }
+  .score-label.tie-label { color: var(--text-muted); }
+
+  .score-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    line-height: 1;
+  }
+
+  .score-divider {
+    width: 1px;
+    background: var(--border);
+    margin: 8px 0;
+    border-radius: 1px;
+  }
+
+  .board-wrap {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px var(--border),
+      0 40px 80px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+  }
+
+  .cell {
+    width: 126px;
+    height: 126px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s ease;
+    overflow: hidden;
+  }
+
+  .cell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .cell:hover:not(.taken)::before {
+    opacity: 1;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, transparent 70%);
+  }
+
+  .cell:hover:not(.taken) { background: var(--surface-hover); }
+  .cell.taken { cursor: default; }
+
+  .cell:nth-child(1) { border-radius: 22px 0 0 0; }
+  .cell:nth-child(3) { border-radius: 0 22px 0 0; }
+  .cell:nth-child(7) { border-radius: 0 0 0 22px; }
+  .cell:nth-child(9) { border-radius: 0 0 22px 0; }
+
+  .sym-o {
+    width: 52px;
+    height: 52px;
+    border: 4px solid var(--o-color);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--o-glow), inset 0 0 20px rgba(100,255,218,0.05);
+    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .sym-o::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--o-glow) 0%, transparent 70%);
+    opacity: 0.5;
+  }
+
+  .sym-x {
+    width: 52px;
+    height: 52px;
+    position: relative;
+    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .sym-x::before,
+  .sym-x::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 52px;
+    height: 4px;
+    background: var(--x-color);
+    border-radius: 2px;
+    box-shadow: 0 0 16px var(--x-glow);
+  }
+
+  .sym-x::before { transform: translate(-50%, -50%) rotate(45deg); }
+  .sym-x::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  @keyframes popIn {
+    from { transform: scale(0) rotate(-10deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+  }
+
+  .cell.win {
+    background: rgba(255,255,255,0.06);
+    animation: winPulse 1s ease infinite alternate;
+  }
+
+  @keyframes winPulse {
+    from { background: rgba(255,255,255,0.04); }
+    to { background: rgba(255,255,255,0.09); }
+  }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    margin-bottom: 28px;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: all 0.4s ease;
+  }
+
+  .status-dot.o { background: var(--o-color); box-shadow: 0 0 10px var(--o-color); }
+  .status-dot.x { background: var(--x-color); box-shadow: 0 0 10px var(--x-color); }
+  .status-dot.tie { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+  .status-dot.pulse { animation: dotPulse 1s ease infinite; }
+
+  @keyframes dotPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.7; }
+  }
+
+  .status-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    font-family: 'Space Mono', monospace;
+    transition: all 0.3s ease;
+  }
+
+  .turn-indicators {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .turn-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1px solid transparent;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    transition: all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+    color: var(--text-muted);
+  }
+
+  .turn-chip.o-chip { border-color: rgba(100,255,218,0.15); }
+  .turn-chip.x-chip { border-color: rgba(255,107,107,0.15); }
+
+  .turn-chip.active.o-chip {
+    background: rgba(100,255,218,0.1);
+    border-color: rgba(100,255,218,0.4);
+    color: var(--o-color);
+    box-shadow: 0 0 20px rgba(100,255,218,0.15);
+  }
+
+  .turn-chip.active.x-chip {
+    background: rgba(255,107,107,0.1);
+    border-color: rgba(255,107,107,0.4);
+    color: var(--x-color);
+    box-shadow: 0 0 20px rgba(255,107,107,0.15);
+  }
+
+  .chip-icon {
+    width: 14px;
+    height: 14px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .chip-icon.o {
+    border: 2px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .chip-icon.x::before,
+  .chip-icon.x::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+  }
+  .chip-icon.x::before { transform: translate(-50%, -50%) rotate(45deg); }
+  .chip-icon.x::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 16px 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: var(--x-color);
+    color: #0a0a0f;
+    border-color: var(--x-color);
+    box-shadow: 0 0 30px rgba(255,107,107,0.2);
+  }
+
+  .btn-primary:hover {
+    background: #ff8f8f;
+    box-shadow: 0 0 40px rgba(255,107,107,0.35);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: var(--surface);
+    color: var(--text-muted);
+    backdrop-filter: blur(10px);
+  }
+
+  .btn-ghost:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+  }
+
+  .btn:active { transform: translateY(0); }
+
+  .result-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    backdrop-filter: blur(8px);
+    background: rgba(10,10,15,0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 10;
+    gap: 8px;
+  }
+
+  .result-overlay.show { opacity: 1; pointer-events: all; }
+
+  .result-emoji {
+    font-size: 48px;
+    animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .result-label {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+
+  .result-sub {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  @keyframes bounceIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .cell { width: 100px; height: 100px; }
+    .score-item { padding: 10px 16px; min-width: 60px; }
+    .score-num { font-size: 24px; }
+    .game-title { font-size: 40px; }
+    .turn-chip span { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="index.html">← Back</a>
+
+<div class="container">
+  <div class="header">
+    <div class="title">Match №</div>
+    <div class="game-title">TIC<span>×</span>TAC</div>
+    <div class="mode-badge">👥 vs Player</div>
+  </div>
+
+  <div class="score-wrap">
+    <div class="score-item" id="score-o">
+      <div class="score-label o-label">P1</div>
+      <div class="score-num" id="score-o-num">0</div>
+    </div>
+    <div class="score-divider"></div>
+    <div class="score-item" id="score-tie">
+      <div class="score-label tie-label">Ties</div>
+      <div class="score-num" id="score-tie-num">0</div>
+    </div>
+    <div class="score-divider"></div>
+    <div class="score-item" id="score-x">
+      <div class="score-label x-label">P2</div>
+      <div class="score-num" id="score-x-num">0</div>
+    </div>
+  </div>
+
+  <div class="turn-indicators">
+    <div class="turn-chip o-chip active" id="chip-o">
+      <div class="chip-icon o"></div>
+      <span>Player 1</span>
+    </div>
+    <div class="turn-chip x-chip" id="chip-x">
+      <div class="chip-icon x"></div>
+      <span>Player 2</span>
+    </div>
+  </div>
+
+  <div class="board-wrap">
+    <div class="board" id="board"></div>
+    <div class="result-overlay" id="result-overlay">
+      <div class="result-emoji" id="result-emoji">🎉</div>
+      <div class="result-label" id="result-label">Player 1 Wins!</div>
+      <div class="result-sub">TAP TO CONTINUE</div>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-dot o pulse" id="status-dot"></div>
+    <div class="status-text" id="status-text">Player 1 Turn</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="newGame()">New Game</button>
+    <button class="btn btn-ghost" onclick="resetScore()">Reset Score</button>
+  </div>
+</div>
+
+<script>
+let board = Array(9).fill(null);
+let currentPlayer = 'O';
+let gameOver = false;
+let scores = { O: 0, X: 0, T: 0 };
+let audioEnabled = true;
+
+const winLines = [
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
+];
+
+// ── Sound ──
+function playSound(frequency, duration, type = 'square', volume = 0.25) {
+  if (!audioEnabled) return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = frequency;
+    osc.type = type;
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+
+function playPlaceO() { playSound(600, 0.12, 'square'); }
+function playPlaceX() { playSound(400, 0.12, 'square'); }
+function playWin()    { [523,659,784,1047].forEach((n,i) => setTimeout(() => playSound(n, 0.2, 'square'), i*140)); }
+function playDraw()   { playSound(220, 0.28, 'sawtooth'); setTimeout(() => playSound(196, 0.28, 'sawtooth'), 160); }
+function playClick()  { playSound(500, 0.08, 'sine', 0.15); }
+
+// Sound toggle
+const soundBtn = document.createElement('button');
+soundBtn.textContent = '🔊';
+soundBtn.title = 'Toggle sound';
+soundBtn.style.cssText = `
+  position: fixed; top: 20px; right: 20px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5); font-size: 18px; width: 42px; height: 42px;
+  border-radius: 12px; cursor: pointer; z-index: 100;
+  transition: all 0.2s ease; backdrop-filter: blur(10px);
+`;
+soundBtn.onmouseenter = () => soundBtn.style.color = '#fff';
+soundBtn.onmouseleave = () => soundBtn.style.color = audioEnabled ? '#fff' : 'rgba(255,255,255,0.3)';
+soundBtn.onclick = () => {
+  audioEnabled = !audioEnabled;
+  soundBtn.textContent = audioEnabled ? '🔊' : '🔇';
+  soundBtn.style.color = audioEnabled ? '#fff' : 'rgba(255,255,255,0.3)';
+  if (audioEnabled) playClick();
+};
+document.body.appendChild(soundBtn);
+
+// ── Board ──
+function initBoard() {
+  const boardEl = document.getElementById('board');
+  boardEl.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.dataset.index = i;
+    cell.onclick = () => handleClick(i);
+    boardEl.appendChild(cell);
+  }
+}
+
+function renderBoard() {
+  document.querySelectorAll('.cell').forEach((cell, i) => {
+    cell.innerHTML = '';
+    cell.className = 'cell';
+    if (board[i] === 'O') {
+      cell.innerHTML = '<div class="sym-o"></div>';
+      cell.classList.add('taken');
+    } else if (board[i] === 'X') {
+      cell.innerHTML = '<div class="sym-x"></div>';
+      cell.classList.add('taken');
+    }
+  });
+}
+
+// ── Click handler (2 player — no AI) ──
+function handleClick(i) {
+  if (board[i] || gameOver) return;
+
+  board[i] = currentPlayer;
+  currentPlayer === 'O' ? playPlaceO() : playPlaceX();
+  renderBoard();
+  checkGame();
+
+  if (!gameOver) switchTurn();
+}
+
+function switchTurn() {
+  currentPlayer = currentPlayer === 'O' ? 'X' : 'O';
+  updateTurnUI();
+}
+
+function updateTurnUI() {
+  document.getElementById('chip-o').classList.toggle('active', currentPlayer === 'O');
+  document.getElementById('chip-x').classList.toggle('active', currentPlayer === 'X');
+  const dot = document.getElementById('status-dot');
+  const text = document.getElementById('status-text');
+  dot.className = 'status-dot pulse ' + (currentPlayer === 'O' ? 'o' : 'x');
+  text.textContent = currentPlayer === 'O' ? 'Player 1 Turn' : 'Player 2 Turn';
+}
+
+function setStatus(type, winner) {
+  const dot  = document.getElementById('status-dot');
+  const text = document.getElementById('status-text');
+  dot.classList.remove('pulse');
+  if (type === 'win') {
+    dot.className = 'status-dot pulse ' + winner.toLowerCase();
+    text.textContent = `Player ${winner === 'O' ? '1' : '2'} Wins!`;
+  } else if (type === 'tie') {
+    dot.className = 'status-dot tie';
+    text.textContent = "It's a Draw!";
+  }
+}
+
+// ── Game logic ──
+function checkGame() {
+  for (const [a, b, c] of winLines) {
+    if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+      gameOver = true;
+      scores[board[a]]++;
+      updateScores();
+      highlightWin([a, b, c]);
+      setStatus('win', board[a]);
+      playWin();
+      showResult(board[a]);
+      return;
+    }
+  }
+  if (!board.includes(null)) {
+    gameOver = true;
+    scores.T++;
+    updateScores();
+    setStatus('tie');
+    playDraw();
+    showResult('T');
+  }
+}
+
+function highlightWin(indices) {
+  document.querySelectorAll('.cell').forEach((c, i) => {
+    if (indices.includes(i)) c.classList.add('win');
+  });
+}
+
+function showResult(result) {
+  setTimeout(() => {
+    const overlay = document.getElementById('result-overlay');
+    const emoji   = document.getElementById('result-emoji');
+    const label   = document.getElementById('result-label');
+    if (result === 'T') { emoji.textContent = '🤝'; label.textContent = "It's a Draw!"; }
+    else { emoji.textContent = '🎉'; label.textContent = `Player ${result === 'O' ? '1' : '2'} Wins!`; }
+    overlay.classList.add('show');
+    overlay.onclick = () => { playClick(); newGame(); };
+  }, 700);
+}
+
+function updateScores() {
+  document.getElementById('score-o-num').textContent   = scores.O;
+  document.getElementById('score-x-num').textContent   = scores.X;
+  document.getElementById('score-tie-num').textContent = scores.T;
+}
+
+// ── Controls ──
+function newGame() {
+  board = Array(9).fill(null);
+  currentPlayer = 'O';
+  gameOver = false;
+  document.getElementById('result-overlay').classList.remove('show');
+  initBoard();
+  updateTurnUI();
+}
+
+function resetScore() {
+  playClick();
+  scores = { O: 0, X: 0, T: 0 };
+  updateScores();
+  newGame();
+}
+
+initBoard();
+updateTurnUI();
+</script>
+</body>
+</html>
