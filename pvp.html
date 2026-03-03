@@ -18,10 +18,11 @@
     --text: #e8e8f0;
     --text-muted: rgba(232,232,240,0.4);
     --gold: #ffd166;
+    --board-size: min(92vw, 420px);
+    --cell-size: calc(var(--board-size) / 3);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { height: 100%; }
 
   body {
@@ -31,41 +32,30 @@
     align-items: center;
     justify-content: center;
     font-family: 'Syne', sans-serif;
-    /* REMOVED: overflow: hidden — was blocking scroll */
     position: relative;
     padding: 80px 20px 40px;
   }
 
   body::before {
     content: '';
-    position: fixed; /* fixed so background stays while scrolling */
-    inset: 0;
+    position: fixed; inset: 0;
     background:
       radial-gradient(ellipse 60% 50% at 20% 20%, rgba(100,255,218,0.05) 0%, transparent 70%),
       radial-gradient(ellipse 50% 60% at 80% 80%, rgba(255,107,107,0.05) 0%, transparent 70%),
       radial-gradient(ellipse 40% 40% at 50% 50%, rgba(255,209,102,0.02) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
-
   body::after {
     content: '';
-    position: fixed; /* fixed so noise stays while scrolling */
-    inset: 0;
+    position: fixed; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
+    pointer-events: none; z-index: 0; opacity: 0.4;
   }
 
   .container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    width: 420px;
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center;
+    width: var(--board-size);
     max-width: 100%;
     margin: auto;
     animation: fadeIn 0.6s ease;
@@ -73,445 +63,218 @@
 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Back button */
   .back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    border-radius: 12px;
+    position: fixed; top: 20px; left: 20px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 16px; border-radius: 12px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
     color: rgba(232,232,240,0.5);
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    z-index: 100;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(10px);
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer; z-index: 100;
+    transition: all 0.2s ease; backdrop-filter: blur(10px);
   }
   .back-btn:hover {
-    color: var(--x-color);
-    border-color: rgba(255,107,107,0.3);
-    background: rgba(255,107,107,0.06);
-    transform: translateX(-2px);
+    color: var(--x-color); border-color: rgba(255,107,107,0.3);
+    background: rgba(255,107,107,0.06); transform: translateX(-2px);
   }
 
-  .header {
-    text-align: center;
-    margin-bottom: 32px;
-  }
-
+  .header { text-align: center; margin-bottom: 28px; }
   .title {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-    margin-bottom: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--text-muted);
+    font-family: 'Space Mono', monospace; margin-bottom: 8px;
   }
-
   .game-title {
-    font-size: 52px;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1;
-    letter-spacing: -2px;
+    font-size: clamp(36px, 12vw, 52px); font-weight: 800;
+    color: var(--text); line-height: 1; letter-spacing: -2px;
   }
-
   .game-title span { color: var(--x-color); }
-
   .mode-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 10px;
-    padding: 5px 14px;
-    border-radius: 100px;
-    background: rgba(255,107,107,0.08);
-    border: 1px solid rgba(255,107,107,0.2);
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--x-color);
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 10px; padding: 5px 14px; border-radius: 100px;
+    background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.2);
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--x-color);
   }
 
   .score-wrap {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 32px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px;
-    backdrop-filter: blur(20px);
+    display: flex; margin-bottom: 24px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px;
+    backdrop-filter: blur(20px); width: 100%;
   }
-
   .score-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px 24px;
-    border-radius: 16px;
-    transition: all 0.3s ease;
-    min-width: 80px;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 12px 0; border-radius: 16px; transition: all 0.3s ease; flex: 1;
   }
-
-  .score-item.active-score { background: var(--surface-hover); }
-
   .score-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    font-family: 'Space Mono', monospace;
-    margin-bottom: 4px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; font-family: 'Space Mono', monospace; margin-bottom: 4px;
   }
-
-  .score-label.o-label { color: var(--o-color); }
-  .score-label.x-label { color: var(--x-color); }
+  .score-label.o-label   { color: var(--o-color); }
+  .score-label.x-label   { color: var(--x-color); }
   .score-label.tie-label { color: var(--text-muted); }
-
   .score-num {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--text);
+    font-size: clamp(24px, 7vw, 32px); font-weight: 800;
+    color: var(--text); font-family: 'Space Mono', monospace; line-height: 1;
+  }
+  .score-divider { width: 1px; background: var(--border); margin: 8px 0; flex-shrink: 0; align-self: stretch; }
+
+  .turn-indicators { display: flex; gap: 8px; margin-bottom: 20px; width: 100%; justify-content: center; }
+  .turn-chip {
+    display: flex; align-items: center; gap: 8px; padding: 8px 18px;
+    border-radius: 100px; border: 1px solid transparent; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
     font-family: 'Space Mono', monospace;
-    line-height: 1;
+    transition: all 0.35s cubic-bezier(0.34,1.2,0.64,1);
+    color: var(--text-muted); white-space: nowrap;
   }
-
-  .score-divider {
-    width: 1px;
-    background: var(--border);
-    margin: 8px 0;
-    border-radius: 1px;
+  .turn-chip.o-chip { border-color: rgba(100,255,218,0.15); }
+  .turn-chip.x-chip { border-color: rgba(255,107,107,0.15); }
+  .turn-chip.active.o-chip { background: rgba(100,255,218,0.1); border-color: rgba(100,255,218,0.4); color: var(--o-color); box-shadow: 0 0 20px rgba(100,255,218,0.15); }
+  .turn-chip.active.x-chip { background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.4); color: var(--x-color); box-shadow: 0 0 20px rgba(255,107,107,0.15); }
+  .chip-icon { width: 14px; height: 14px; position: relative; flex-shrink: 0; }
+  .chip-icon.o { border: 2px solid currentColor; border-radius: 50%; }
+  .chip-icon.x::before, .chip-icon.x::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width: 14px; height: 2px; background: currentColor; border-radius: 1px;
   }
+  .chip-icon.x::before { transform: translate(-50%,-50%) rotate(45deg); }
+  .chip-icon.x::after  { transform: translate(-50%,-50%) rotate(-45deg); }
 
+  /* ══ BOARD FIX — rigid CSS variable driven layout ══ */
   .board-wrap {
-    position: relative;
-    margin-bottom: 28px;
+    position: relative; margin-bottom: 20px;
+    width: var(--board-size);
+    height: var(--board-size);  /* explicit height locks layout */
+    flex-shrink: 0;
   }
 
   .board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, var(--cell-size));
+    grid-template-rows:    repeat(3, var(--cell-size));
     gap: 2px;
     background: var(--border);
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow:
-      0 0 0 1px var(--border),
-      0 40px 80px rgba(0,0,0,0.5),
-      inset 0 1px 0 rgba(255,255,255,0.05);
+    border-radius: 24px; overflow: hidden;
+    width: var(--board-size);
+    height: var(--board-size);  /* both dimensions locked */
+    box-shadow: 0 0 0 1px var(--border), 0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
     backdrop-filter: blur(20px);
   }
 
   .cell {
-    width: 126px;
-    height: 126px;
+    width: var(--cell-size);
+    height: var(--cell-size);   /* rigid — content cannot change this */
     background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    position: relative;
-    transition: background 0.2s ease;
-    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; position: relative;
+    transition: background 0.2s ease; overflow: hidden; flex-shrink: 0;
   }
-
   .cell::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease;
   }
-
   .cell:hover:not(.taken)::before {
     opacity: 1;
     background: radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, transparent 70%);
   }
-
   .cell:hover:not(.taken) { background: var(--surface-hover); }
   .cell.taken { cursor: default; }
-
   .cell:nth-child(1) { border-radius: 22px 0 0 0; }
   .cell:nth-child(3) { border-radius: 0 22px 0 0; }
   .cell:nth-child(7) { border-radius: 0 0 0 22px; }
   .cell:nth-child(9) { border-radius: 0 0 22px 0; }
 
+  /* Symbols are a fixed % of cell-size — no reflow possible */
   .sym-o {
-    width: 52px;
-    height: 52px;
-    border: 4px solid var(--o-color);
+    width:  calc(var(--cell-size) * 0.42);
+    height: calc(var(--cell-size) * 0.42);
+    border: calc(var(--cell-size) * 0.03) solid var(--o-color);
     border-radius: 50%;
     box-shadow: 0 0 20px var(--o-glow), inset 0 0 20px rgba(100,255,218,0.05);
-    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
+    animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative; flex-shrink: 0; pointer-events: none;
   }
-
   .sym-o::after {
-    content: '';
-    position: absolute;
-    inset: -8px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--o-glow) 0%, transparent 70%);
-    opacity: 0.5;
+    content: ''; position: absolute; inset: -8px; border-radius: 50%;
+    background: radial-gradient(circle, var(--o-glow) 0%, transparent 70%); opacity: 0.5;
   }
-
   .sym-x {
-    width: 52px;
-    height: 52px;
+    width:  calc(var(--cell-size) * 0.42);
+    height: calc(var(--cell-size) * 0.42);
     position: relative;
-    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    flex-shrink: 0; pointer-events: none;
   }
-
-  .sym-x::before,
-  .sym-x::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 52px;
-    height: 4px;
-    background: var(--x-color);
-    border-radius: 2px;
-    box-shadow: 0 0 16px var(--x-glow);
+  .sym-x::before, .sym-x::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width:  calc(var(--cell-size) * 0.42);
+    height: calc(var(--cell-size) * 0.03);
+    background: var(--x-color); border-radius: 2px; box-shadow: 0 0 16px var(--x-glow);
   }
-
-  .sym-x::before { transform: translate(-50%, -50%) rotate(45deg); }
-  .sym-x::after { transform: translate(-50%, -50%) rotate(-45deg); }
+  .sym-x::before { transform: translate(-50%,-50%) rotate(45deg); }
+  .sym-x::after  { transform: translate(-50%,-50%) rotate(-45deg); }
 
   @keyframes popIn {
     from { transform: scale(0) rotate(-10deg); opacity: 0; }
-    to { transform: scale(1) rotate(0); opacity: 1; }
+    to   { transform: scale(1) rotate(0);      opacity: 1; }
   }
-
-  .cell.win {
-    background: rgba(255,255,255,0.06);
-    animation: winPulse 1s ease infinite alternate;
-  }
-
+  .cell.win { animation: winPulse 1s ease infinite alternate; }
   @keyframes winPulse {
     from { background: rgba(255,255,255,0.04); }
-    to { background: rgba(255,255,255,0.09); }
+    to   { background: rgba(255,255,255,0.09); }
   }
 
-  .status-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 40px;
-    margin-bottom: 28px;
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    transition: all 0.4s ease;
-  }
-
-  .status-dot.o { background: var(--o-color); box-shadow: 0 0 10px var(--o-color); }
-  .status-dot.x { background: var(--x-color); box-shadow: 0 0 10px var(--x-color); }
-  .status-dot.tie { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+  .status-bar { display: flex; align-items: center; justify-content: center; gap: 10px; height: 40px; margin-bottom: 20px; width: 100%; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; transition: all 0.4s ease; }
+  .status-dot.o   { background: var(--o-color); box-shadow: 0 0 10px var(--o-color); }
+  .status-dot.x   { background: var(--x-color); box-shadow: 0 0 10px var(--x-color); }
+  .status-dot.tie { background: var(--gold);     box-shadow: 0 0 10px var(--gold); }
   .status-dot.pulse { animation: dotPulse 1s ease infinite; }
+  @keyframes dotPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.7; } }
+  .status-text { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: 0.02em; font-family: 'Space Mono', monospace; transition: all 0.3s ease; }
 
-  @keyframes dotPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.4); opacity: 0.7; }
-  }
+  .btn-row { display: flex; gap: 12px; width: 100%; }
+  .btn { flex: 1; padding: 16px 20px; border-radius: 16px; border: 1px solid var(--border); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Space Mono', monospace; cursor: pointer; transition: all 0.25s ease; }
+  .btn-primary { background: var(--x-color); color: #0a0a0f; border-color: var(--x-color); box-shadow: 0 0 30px rgba(255,107,107,0.2); }
+  .btn-primary:hover { background: #ff8f8f; box-shadow: 0 0 40px rgba(255,107,107,0.35); transform: translateY(-2px); }
+  .btn-ghost { background: var(--surface); color: var(--text-muted); backdrop-filter: blur(10px); }
+  .btn-ghost:hover { background: var(--surface-hover); color: var(--text); border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+  .btn:active { transform: translateY(0) !important; }
 
-  .status-text {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.02em;
-    font-family: 'Space Mono', monospace;
-    transition: all 0.3s ease;
-  }
-
-  .turn-indicators {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 32px;
-  }
-
-  .turn-chip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border-radius: 100px;
-    border: 1px solid transparent;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-family: 'Space Mono', monospace;
-    transition: all 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
-    color: var(--text-muted);
-  }
-
-  .turn-chip.o-chip { border-color: rgba(100,255,218,0.15); }
-  .turn-chip.x-chip { border-color: rgba(255,107,107,0.15); }
-
-  .turn-chip.active.o-chip {
-    background: rgba(100,255,218,0.1);
-    border-color: rgba(100,255,218,0.4);
-    color: var(--o-color);
-    box-shadow: 0 0 20px rgba(100,255,218,0.15);
-  }
-
-  .turn-chip.active.x-chip {
-    background: rgba(255,107,107,0.1);
-    border-color: rgba(255,107,107,0.4);
-    color: var(--x-color);
-    box-shadow: 0 0 20px rgba(255,107,107,0.15);
-  }
-
-  .chip-icon {
-    width: 14px;
-    height: 14px;
-    position: relative;
-    flex-shrink: 0;
-  }
-
-  .chip-icon.o {
-    border: 2px solid currentColor;
-    border-radius: 50%;
-  }
-
-  .chip-icon.x::before,
-  .chip-icon.x::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 14px;
-    height: 2px;
-    background: currentColor;
-    border-radius: 1px;
-  }
-  .chip-icon.x::before { transform: translate(-50%, -50%) rotate(45deg); }
-  .chip-icon.x::after { transform: translate(-50%, -50%) rotate(-45deg); }
-
-  .btn-row {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .btn {
-    flex: 1;
-    padding: 16px 24px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-family: 'Space Mono', monospace;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn-primary {
-    background: var(--x-color);
-    color: #0a0a0f;
-    border-color: var(--x-color);
-    box-shadow: 0 0 30px rgba(255,107,107,0.2);
-  }
-
-  .btn-primary:hover {
-    background: #ff8f8f;
-    box-shadow: 0 0 40px rgba(255,107,107,0.35);
-    transform: translateY(-2px);
-  }
-
-  .btn-ghost {
-    background: var(--surface);
-    color: var(--text-muted);
-    backdrop-filter: blur(10px);
-  }
-
-  .btn-ghost:hover {
-    background: var(--surface-hover);
-    color: var(--text);
-    border-color: rgba(255,255,255,0.15);
-    transform: translateY(-2px);
-  }
-
-  .btn:active { transform: translateY(0); }
-
+  /* Result overlay — all previous fixes retained */
   .result-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 24px;
-    backdrop-filter: blur(8px);
-    background: rgba(10,10,15,0.7);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-    z-index: 10;
-    gap: 8px;
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 24px;
+    border-radius: 24px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    background: rgba(10,10,15,0.82);
+    opacity: 0; pointer-events: none; transition: opacity 0.4s ease; z-index: 10; gap: 10px;
   }
-
   .result-overlay.show { opacity: 1; pointer-events: all; }
+  .result-emoji { font-size: clamp(40px,12vw,56px); line-height: 1; animation: overlayPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+  .result-label { font-size: clamp(18px,5.5vw,30px); font-weight: 800; color: var(--text); letter-spacing: -0.5px; white-space: nowrap; animation: overlayPop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.06s both; transition: color 0.3s ease, text-shadow 0.3s ease; }
+  .result-overlay.winner-o .result-label { color: var(--o-color); text-shadow: 0 0 30px var(--o-glow); }
+  .result-overlay.winner-x .result-label { color: var(--x-color); text-shadow: 0 0 30px var(--x-glow); }
+  .result-sub { font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); font-family: 'Space Mono', monospace; margin-top: 4px; animation: overlayPop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.12s both; }
+  @keyframes overlayPop { from { transform: scale(0.7) translateY(8px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
 
-  .result-emoji {
-    font-size: 48px;
-    animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .result-label {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.5px;
-  }
-
-  .result-sub {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-  }
-
-  @keyframes bounceIn {
-    from { transform: scale(0); }
-    to { transform: scale(1); }
-  }
-
-  /* Responsive */
   @media (max-width: 480px) {
-    .cell { width: 100px; height: 100px; }
-    .score-item { padding: 10px 16px; min-width: 60px; }
-    .score-num { font-size: 24px; }
-    .game-title { font-size: 40px; }
+    body { padding: 68px 14px 28px; }
+    .score-label { font-size: 9px; }
+    .turn-chip   { font-size: 11px; padding: 7px 12px; }
+    .status-text { font-size: 13px; }
+    .btn         { padding: 14px 12px; font-size: 11px; }
+  }
+  @media (max-width: 360px) {
     .turn-chip span { display: none; }
+    .turn-chip { padding: 8px 14px; }
   }
 </style>
 </head>
@@ -570,201 +333,125 @@
 
   <div class="btn-row">
     <button class="btn btn-primary" onclick="newGame()">New Game</button>
-    <button class="btn btn-ghost" onclick="resetScore()">Reset Score</button>
+    <button class="btn btn-ghost"   onclick="resetScore()">Reset Score</button>
   </div>
 </div>
 
 <script>
-let board = Array(9).fill(null);
-let currentPlayer = 'O';
-let gameOver = false;
-let scores = { O: 0, X: 0, T: 0 };
-let audioEnabled = true;
-
-const winLines = [
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
-];
-
-// ── Sound ──
-function playSound(frequency, duration, type = 'square', volume = 0.25) {
+let _audioCtx = null, audioEnabled = true;
+function getAudioCtx() { if (!_audioCtx) _audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return _audioCtx; }
+async function playSound(freq, dur, type='square', vol=0.25, delay=0) {
   if (!audioEnabled) return;
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value = frequency;
-    osc.type = type;
-    gain.gain.setValueAtTime(volume, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
-  } catch(e) {}
+    const ctx = getAudioCtx();
+    if (ctx.state==='suspended') await ctx.resume();
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type=type; o.frequency.value=freq;
+    const t=ctx.currentTime+delay;
+    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+    o.start(t); o.stop(t+dur);
+  } catch(e){}
 }
+function playPlaceO(){ playSound(600,0.12,'square'); }
+function playPlaceX(){ playSound(400,0.12,'square'); }
+function playClick() { playSound(500,0.08,'sine',0.15); }
+function playDraw()  { playSound(220,0.28,'sawtooth',0.25,0); playSound(196,0.28,'sawtooth',0.25,0.16); }
+function playWin()   { [523,659,784,1047].forEach((f,i)=>playSound(f,0.2,'square',0.25,i*0.14)); }
 
-function playPlaceO() { playSound(600, 0.12, 'square'); }
-function playPlaceX() { playSound(400, 0.12, 'square'); }
-function playWin()    { [523,659,784,1047].forEach((n,i) => setTimeout(() => playSound(n, 0.2, 'square'), i*140)); }
-function playDraw()   { playSound(220, 0.28, 'sawtooth'); setTimeout(() => playSound(196, 0.28, 'sawtooth'), 160); }
-function playClick()  { playSound(500, 0.08, 'sine', 0.15); }
+const sb=document.createElement('button');
+sb.textContent='🔊'; sb.title='Toggle sound';
+sb.style.cssText='position:fixed;top:20px;right:20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:18px;width:42px;height:42px;border-radius:12px;cursor:pointer;z-index:100;transition:all 0.2s ease;backdrop-filter:blur(10px);';
+sb.onmouseenter=()=>sb.style.color='#fff';
+sb.onmouseleave=()=>sb.style.color=audioEnabled?'#fff':'rgba(255,255,255,0.3)';
+sb.onclick=()=>{ audioEnabled=!audioEnabled; sb.textContent=audioEnabled?'🔊':'🔇'; sb.style.color=audioEnabled?'#fff':'rgba(255,255,255,0.3)'; if(audioEnabled)playClick(); };
+document.body.appendChild(sb);
 
-// Sound toggle
-const soundBtn = document.createElement('button');
-soundBtn.textContent = '🔊';
-soundBtn.title = 'Toggle sound';
-soundBtn.style.cssText = `
-  position: fixed; top: 20px; right: 20px;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.5); font-size: 18px; width: 42px; height: 42px;
-  border-radius: 12px; cursor: pointer; z-index: 100;
-  transition: all 0.2s ease; backdrop-filter: blur(10px);
-`;
-soundBtn.onmouseenter = () => soundBtn.style.color = '#fff';
-soundBtn.onmouseleave = () => soundBtn.style.color = audioEnabled ? '#fff' : 'rgba(255,255,255,0.3)';
-soundBtn.onclick = () => {
-  audioEnabled = !audioEnabled;
-  soundBtn.textContent = audioEnabled ? '🔊' : '🔇';
-  soundBtn.style.color = audioEnabled ? '#fff' : 'rgba(255,255,255,0.3)';
-  if (audioEnabled) playClick();
-};
-document.body.appendChild(soundBtn);
+let board=Array(9).fill(null), currentPlayer='O', gameOver=false, scores={O:0,X:0,T:0};
+const winLines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 
-// ── Board ──
-function initBoard() {
-  const boardEl = document.getElementById('board');
-  boardEl.innerHTML = '';
-  for (let i = 0; i < 9; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'cell';
-    cell.dataset.index = i;
-    cell.onclick = () => handleClick(i);
-    boardEl.appendChild(cell);
+function initBoard(){
+  const el=document.getElementById('board'); el.innerHTML='';
+  for(let i=0;i<9;i++){
+    const c=document.createElement('div');
+    c.className='cell'; c.dataset.index=i; c.onclick=()=>handleClick(i); el.appendChild(c);
   }
 }
 
-function renderBoard() {
-  document.querySelectorAll('.cell').forEach((cell, i) => {
-    cell.innerHTML = '';
-    cell.className = 'cell';
-    if (board[i] === 'O') {
-      cell.innerHTML = '<div class="sym-o"></div>';
-      cell.classList.add('taken');
-    } else if (board[i] === 'X') {
-      cell.innerHTML = '<div class="sym-x"></div>';
-      cell.classList.add('taken');
-    }
+function renderBoard(){
+  document.querySelectorAll('.cell').forEach((cell,i)=>{
+    cell.innerHTML=''; cell.className='cell';
+    if(board[i]==='O'){ cell.innerHTML='<div class="sym-o"></div>'; cell.classList.add('taken'); }
+    else if(board[i]==='X'){ cell.innerHTML='<div class="sym-x"></div>'; cell.classList.add('taken'); }
   });
 }
 
-// ── Click handler (2 player — no AI) ──
-function handleClick(i) {
-  if (board[i] || gameOver) return;
-
-  board[i] = currentPlayer;
-  currentPlayer === 'O' ? playPlaceO() : playPlaceX();
-  renderBoard();
-  checkGame();
-
-  if (!gameOver) switchTurn();
+function handleClick(i){
+  if(board[i]||gameOver) return;
+  board[i]=currentPlayer;
+  currentPlayer==='O'?playPlaceO():playPlaceX();
+  renderBoard(); checkGame();
+  if(!gameOver) switchTurn();
 }
 
-function switchTurn() {
-  currentPlayer = currentPlayer === 'O' ? 'X' : 'O';
-  updateTurnUI();
+function switchTurn(){ currentPlayer=currentPlayer==='O'?'X':'O'; updateTurnUI(); }
+
+function checkGame(){
+  for(const [a,b,c] of winLines){
+    if(board[a]&&board[a]===board[b]&&board[b]===board[c]){
+      gameOver=true; scores[board[a]]++; updateScores();
+      highlightWin([a,b,c]); setStatus('win',board[a]); playWin(); showResult(board[a]); return;
+    }
+  }
+  if(!board.includes(null)){ gameOver=true; scores.T++; updateScores(); setStatus('tie'); playDraw(); showResult('T'); }
 }
 
-function updateTurnUI() {
-  document.getElementById('chip-o').classList.toggle('active', currentPlayer === 'O');
-  document.getElementById('chip-x').classList.toggle('active', currentPlayer === 'X');
-  const dot = document.getElementById('status-dot');
-  const text = document.getElementById('status-text');
-  dot.className = 'status-dot pulse ' + (currentPlayer === 'O' ? 'o' : 'x');
-  text.textContent = currentPlayer === 'O' ? 'Player 1 Turn' : 'Player 2 Turn';
+function highlightWin(idx){ document.querySelectorAll('.cell').forEach((c,i)=>{ if(idx.includes(i)) c.classList.add('win'); }); }
+
+function updateTurnUI(){
+  document.getElementById('chip-o').classList.toggle('active',currentPlayer==='O');
+  document.getElementById('chip-x').classList.toggle('active',currentPlayer==='X');
+  const dot=document.getElementById('status-dot'), text=document.getElementById('status-text');
+  dot.className='status-dot pulse '+(currentPlayer==='O'?'o':'x');
+  text.textContent=currentPlayer==='O'?'Player 1 Turn':'Player 2 Turn';
 }
 
-function setStatus(type, winner) {
-  const dot  = document.getElementById('status-dot');
-  const text = document.getElementById('status-text');
+function setStatus(type,winner){
+  const dot=document.getElementById('status-dot'), text=document.getElementById('status-text');
   dot.classList.remove('pulse');
-  if (type === 'win') {
-    dot.className = 'status-dot pulse ' + winner.toLowerCase();
-    text.textContent = `Player ${winner === 'O' ? '1' : '2'} Wins!`;
-  } else if (type === 'tie') {
-    dot.className = 'status-dot tie';
-    text.textContent = "It's a Draw!";
-  }
+  if(type==='win'){ dot.className='status-dot pulse '+winner.toLowerCase(); text.textContent=`Player ${winner==='O'?'1':'2'} Wins!`; }
+  else{ dot.className='status-dot tie'; text.textContent="It's a Draw!"; }
 }
 
-// ── Game logic ──
-function checkGame() {
-  for (const [a, b, c] of winLines) {
-    if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-      gameOver = true;
-      scores[board[a]]++;
-      updateScores();
-      highlightWin([a, b, c]);
-      setStatus('win', board[a]);
-      playWin();
-      showResult(board[a]);
-      return;
-    }
-  }
-  if (!board.includes(null)) {
-    gameOver = true;
-    scores.T++;
-    updateScores();
-    setStatus('tie');
-    playDraw();
-    showResult('T');
-  }
+function showResult(result){
+  setTimeout(()=>{
+    const ov=document.getElementById('result-overlay');
+    const em=document.getElementById('result-emoji');
+    const lb=document.getElementById('result-label');
+    ov.classList.remove('winner-o','winner-x');
+    if(result==='T'){ em.textContent='🤝'; lb.textContent="It's a Draw!"; }
+    else{ em.textContent='🎉'; lb.textContent=`Player ${result==='O'?'1':'2'} Wins!`; ov.classList.add(result==='O'?'winner-o':'winner-x'); }
+    ov.classList.add('show');
+    ov.onclick=()=>{ playClick(); newGame(); };
+  },700);
 }
 
-function highlightWin(indices) {
-  document.querySelectorAll('.cell').forEach((c, i) => {
-    if (indices.includes(i)) c.classList.add('win');
-  });
+function updateScores(){
+  document.getElementById('score-o-num').textContent=scores.O;
+  document.getElementById('score-x-num').textContent=scores.X;
+  document.getElementById('score-tie-num').textContent=scores.T;
 }
 
-function showResult(result) {
-  setTimeout(() => {
-    const overlay = document.getElementById('result-overlay');
-    const emoji   = document.getElementById('result-emoji');
-    const label   = document.getElementById('result-label');
-    if (result === 'T') { emoji.textContent = '🤝'; label.textContent = "It's a Draw!"; }
-    else { emoji.textContent = '🎉'; label.textContent = `Player ${result === 'O' ? '1' : '2'} Wins!`; }
-    overlay.classList.add('show');
-    overlay.onclick = () => { playClick(); newGame(); };
-  }, 700);
+function newGame(){
+  board=Array(9).fill(null); currentPlayer='O'; gameOver=false;
+  const ov=document.getElementById('result-overlay');
+  ov.classList.remove('show','winner-o','winner-x');
+  initBoard(); updateTurnUI();
 }
 
-function updateScores() {
-  document.getElementById('score-o-num').textContent   = scores.O;
-  document.getElementById('score-x-num').textContent   = scores.X;
-  document.getElementById('score-tie-num').textContent = scores.T;
-}
+function resetScore(){ playClick(); scores={O:0,X:0,T:0}; updateScores(); newGame(); }
 
-// ── Controls ──
-function newGame() {
-  board = Array(9).fill(null);
-  currentPlayer = 'O';
-  gameOver = false;
-  document.getElementById('result-overlay').classList.remove('show');
-  initBoard();
-  updateTurnUI();
-}
-
-function resetScore() {
-  playClick();
-  scores = { O: 0, X: 0, T: 0 };
-  updateScores();
-  newGame();
-}
-
-initBoard();
-updateTurnUI();
+initBoard(); updateTurnUI();
 </script>
 </body>
 </html>
