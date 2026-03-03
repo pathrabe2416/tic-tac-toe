@@ -1,4 +1,4 @@
-#🎮 TIC×TAC — Retro Cyber Game
+# 🎮 TIC×TAC — Retro Cyber Game
 
 A visually immersive retro-styled Tic Tac Toe web application built using pure HTML, CSS, and Vanilla JavaScript.
 
