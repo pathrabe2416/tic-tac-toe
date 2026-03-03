@@ -125,10 +125,15 @@ Uses clamp() and scalable CSS variables to maintain proportional board sizing.
 ## 🏆 Highlights
 
 ✔ Procedural audio engine
+
 ✔ Smart AI with strategy escalation
+
 ✔ Clean UX separation between modes
+
 ✔ No external dependencies
+
 ✔ Production-level UI polish
+
 ✔ Scalable CSS variable-based board layout
 
 ## ⭐ Support
