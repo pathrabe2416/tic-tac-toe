@@ -1,6 +1,6 @@
 # 🎮 TIC × TAC
 
-A visually immersive retro-styled Tic Tac Toe web application built using pure HTML, CSS, and Vanilla JavaScript.
+A visually immersive Tic Tac Toe web application built using pure HTML, CSS, and Vanilla JavaScript.
 
 Designed with a modern dark–neon aesthetic, smooth animations, glow effects, dynamic sound design, and a responsive layout — delivering a polished arcade-style experience directly in the browser.
 
